@@ -10,10 +10,11 @@ public class Main {
         initialInfo();
         cookPancakes();
 
+        System.out.println("Er du meget sulten (j/n)?");
+
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
-        System.out.println("Er du meget sulten (j/n)?");
         if (input.toLowerCase().startsWith("j")) {
             System.out.println("Spis det hele selv!");
         } else if (input.toLowerCase().startsWith("n")) {
