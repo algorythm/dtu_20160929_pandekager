@@ -6,79 +6,45 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Bag Pandekager-app\n");
+        boolean success = false;
+        int totalPancakeCount = 0;
 
-        initialInfo();
-        cookPancakes();
-
-        System.out.println("Er du meget sulten (j/n)?");
-
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-
-        if (input.toLowerCase().startsWith("j")) {
-            System.out.println("Spis det hele selv!");
-        } else if (input.toLowerCase().startsWith("n")) {
-            System.out.println("Invitér naboerne til spisning!");
+        while(!success) {
+            System.out.print("Hvor mange pandekager skal bruges? ");
+            Scanner scanner = new Scanner(System.in);
+            try {
+                totalPancakeCount = scanner.nextInt();
+//                Pancake.totalCount = scanner.nextInt();
+                success = true;
+            } catch(Exception e) {
+                System.out.println("Du skal angive et heltal!");
+            }
         }
-    }
 
-    public static void initialInfo() {
-        Scanner pancakeCount = new Scanner(System.in);
-
-        System.out.println("Hvor mange pandekager skal der laves?");
-        int count = pancakeCount.nextInt();
-        //pancakeCount.close();
-
-        /*
-         * 12,6 gram mel pr. stk
-         * 3 ml mælk pr. stk
-         * 0,2 æg pr. stk
-         * - æg afrundes
-         */
-
-        double gFlour = 12.6 * count;
-        double mlMilk = 3 * count;
-        double eggs = Math.round(0.2 * count);
-
-        System.out.println("Til " + count + " pandekager, skal der bruges:");
-        System.out.println(gFlour + " gram mel, ");
-        System.out.println(mlMilk + " ml mælk, og");
-        System.out.println(eggs + " æg\n");
+        Pancake.printIngredients(totalPancakeCount);
 
         System.out.println("Sæt en pande på komfuret. \nTænd komfuret.\nRør ingredienserne sammen i en skål.");
-    }
 
+        for (int i = 0; i < totalPancakeCount; i++) {
+           Pancake.cookPancake();
+        }
 
-    public static void cookPancakes() {
         boolean moreDoe = true;
         while (moreDoe) {
-            System.out.print("Mere dej (j/n)? ");
-            Scanner input = new Scanner(System.in);
-            String answer = input.nextLine();
-
-            if (answer.toLowerCase().startsWith("j")) {
-                System.out.println("Hæld fedtstof og en klat dej på panden.");
-                checkIfDone();
-            } else if (answer.toLowerCase().startsWith("n")) {
-                System.out.println("Sluk komfuret");
+            boolean answer = Pancake.question("Er der mere dej tilbage i skålen");
+            if (answer)
+                Pancake.cookPancake();
+//                System.out.println("Hæld fedtstof og en klat dej på panden.");
+            else
                 moreDoe = false;
-            }
         }
-    }
 
-    public static void checkIfDone() {
-        boolean isDone = false;
-        while (!isDone) {
-            System.out.println("Har pandekagen fået nok (j/n)?");
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
+        System.out.println("Sluk komfuret!");
 
-            if (input.toLowerCase().startsWith("j")) {
-                System.out.println("Tag pandekagen af panden.");
-                isDone = true;
-            } else if (input.toLowerCase().startsWith("n")) {
-                System.out.println("Bag pandekagen lidt længere.");
-            }
-        }
+       boolean answer = Pancake.question("Er du meget sulten");
+        if (answer)
+            System.out.println("Spis det hele selv!");
+        else
+            System.out.println("Invitér naboerne på besøg.");
     }
 }
